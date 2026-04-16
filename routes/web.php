@@ -1,4 +1,6 @@
 <?php
 use Src\Route;
-Route::add('go', [Controller\Site::class, 'index']);
-Route::add('hello', [Controller\Site::class, 'hello']);
+use Controller\Site;
+Route::add('go', [Site::class, 'index']);
+Route::add('hello', [Site::class, 'hello']);
+Route::add('bd-test', [Site::class, 'bdTest']);

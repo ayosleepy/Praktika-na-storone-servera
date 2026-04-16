@@ -14,12 +14,8 @@ class Application
     }
     public function __get($key)
     {
-        if ($key === 'settings') {
-            return $this->settings;
-        }
-        if ($key === 'database') {
-            return $this->database;
-        }
+        if ($key === 'settings') return $this->settings;
+        if ($key === 'database') return $this->database;
         throw new Error('Accessing a non-existent property');
     }
     public function run(): void
