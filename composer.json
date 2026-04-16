@@ -1,0 +1,22 @@
+{
+    "name": "gr432_shefal/praktika",
+    "description": "Simple mvc framework",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "gr432_shefal"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.4 | ^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Src\\": "core/Src/",
+            "Controller\\": "app/Controller/",
+            "Model\\": "app/Model/"
+        }
+    }
+}
