@@ -2,6 +2,8 @@
 namespace Controller;
 use Src\View;
 use Model\Employee;
+use Model\User;
+use Src\Request;
 class Site
 {
     public function index(): string
@@ -24,5 +26,12 @@ class Site
         } catch (\Exception $e) {
             echo 'Ошибка: ' . $e->getMessage();
         }
+    }
+    public function signup(Request $request): string
+    {
+        if ($request->method === 'POST' && User::create($request->all())) {
+            return new View('site.signup', ['message' => 'Вы успешно зарегистрированы']);
+        }
+        return new View('site.signup');
     }
 }
