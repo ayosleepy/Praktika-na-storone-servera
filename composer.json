@@ -12,13 +12,15 @@
     "require": {
         "php": "^7.4 | ^8.0",
         "illuminate/database": "^12.0@dev",
-        "illuminate/events": "^12.0@dev"
+        "illuminate/events": "^12.0@dev",
+        "nikic/fast-route": "^2.0@dev"
     },
     "autoload": {
         "psr-4": {
             "Src\\": "core/Src/",
             "Controller\\": "app/Controller/",
-            "Model\\": "app/Model/"
+            "Model\\": "app/Model/",
+            "Middlewares\\": "app/Middlewares/"
         }
     }
 }

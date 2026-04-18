@@ -3,6 +3,7 @@ namespace Controller;
 use Src\View;
 use Src\Request;
 use Model\User;
+use Src\Auth\Auth;
 class Site
 {
     public function index(): string
@@ -32,5 +33,20 @@ class Site
             app()->route->redirect('/go');
         }
         return new View('site.signup');
+    }
+    public function login(Request $request): string
+    {
+        if ($request->method === 'GET') {
+            return new View('site.login');
+        }
+        if (Auth::attempt($request->all())) {
+            app()->route->redirect('/hello');
+        }
+        return new View('site.login', ['message' => 'Неправильные логин или пароль']);
+    }
+    public function logout(): void
+    {
+        Auth::logout();
+        app()->route->redirect('/hello');
     }
 }
