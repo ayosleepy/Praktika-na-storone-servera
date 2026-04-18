@@ -1,9 +1,8 @@
 <?php
 namespace Controller;
 use Src\View;
-use Model\Employee;
-use Model\User;
 use Src\Request;
+use Model\User;
 class Site
 {
     public function index(): string
@@ -19,7 +18,7 @@ class Site
     {
         try {
             $emp = new Employee();
-            $emp->full_name = 'Иванов Иван';
+            $emp->full_name = 'Тестовый Сотрудник';
             $emp->position = 'Охранник';
             $emp->save();
             echo 'БД подключена успешно!';
@@ -30,7 +29,7 @@ class Site
     public function signup(Request $request): string
     {
         if ($request->method === 'POST' && User::create($request->all())) {
-            return new View('site.signup', ['message' => 'Вы успешно зарегистрированы']);
+            app()->route->redirect('/go');
         }
         return new View('site.signup');
     }
