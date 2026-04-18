@@ -16,8 +16,5 @@ function getConfigs(string $path = DIR_CONFIG): array
 
 require_once __DIR__ . '/../routes/web.php';
 
-$allConfigs = getConfigs();
-$settings = new Src\Settings($allConfigs);
-$database = new Src\Database($allConfigs['database']);
-
-return new Src\Application($settings, $database);
+$settings = new Src\Settings(getConfigs());
+return new Src\Application($settings);
