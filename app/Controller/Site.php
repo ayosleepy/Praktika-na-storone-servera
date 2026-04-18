@@ -49,4 +49,18 @@ class Site
         Auth::logout();
         app()->route->redirect('/hello');
     }
+    public function securityDashboard(): string
+    {
+        return new View('security.dashboard');
+    }
+
+    public function securityReport(): string
+    {
+        return new View('security.report');
+    }
+
+    public function securitySearch(): string
+    {
+        return new View('security.search');
+    }
 }
