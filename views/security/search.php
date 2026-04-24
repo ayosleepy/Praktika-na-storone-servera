@@ -40,7 +40,7 @@
     box-sizing: border-box;
 }
 .page-container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 40px auto;
     padding: 0 16px;
 }
@@ -49,11 +49,12 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 .search-form label {
     font-weight: 600;
     text-decoration: underline;
+    white-space: nowrap;
 }
 .pass-input {
     padding: 10px 14px;

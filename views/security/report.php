@@ -45,7 +45,7 @@
     box-sizing: border-box;
 }
 .page-container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 40px auto;
     padding: 0 16px;
 }
@@ -54,11 +54,12 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 .filters label {
     font-weight: 600;
     text-decoration: underline;
+    white-space: nowrap;
 }
 .date-input {
     padding: 10px 14px;
@@ -66,6 +67,7 @@
     border-radius: 8px;
     font-size: 14px;
     background: #fff;
+    white-space: nowrap;
 }
 .separator {
     color: #000;

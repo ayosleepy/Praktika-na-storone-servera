@@ -87,9 +87,8 @@
 <body>
 <header>
     <nav>
-        <a href="/">Главная</a>
         <?php if(app()->auth->check()): ?>
-            <span style="margin-right: 15px;"><?= app()->auth->user()->name ?></span>
+            <span style="margin-right: 15px; font-weight: bold;"><?= app()->auth->user()->name ?></span>
             <a href="/security/dashboard">Панель охраны</a>
             <a href="/security/report">Отчет</a>
             <a href="/security/search">Поиск</a>
