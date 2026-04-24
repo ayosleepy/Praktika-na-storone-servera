@@ -45,12 +45,20 @@ class Site
         app()->route->redirect('/login');
     }
 
-    public function securityDashboard(): string
+    public function securityDashboard(Request $request): string
     {
-        $events = Event::with('pass.employee')
-            ->orderBy('event_time', 'desc')
-            ->limit(15)
-            ->get();
+        $events = collect();
+
+        if ($request->get('search')) {
+            $search = $request->get('search');
+            $events = Event::with('pass.employee', 'turnstile')
+                ->whereHas('pass.employee', function ($q) use ($search) {
+                    $q->where('full_name', 'like', '%' . $search . '%');
+                })
+                ->orderBy('event_time', 'desc')
+                ->limit(50)
+                ->get();
+        }
 
         return new View('security.dashboard', ['events' => $events]);
     }

@@ -1,13 +1,13 @@
 <div class="page-container">
     <h2>Поиск событий по пропуску</h2>
 
-    <div class="search-form">
+    <form method="get" class="search-form">
         <label>Введите номер:</label>
-        <input type="text" value="**** **** ****" class="pass-input">
-        <button class="btn btn-primary">ПОИСК</button>
-    </div>
+        <input type="text" name="card_number" value="<?= htmlspecialchars($card_number) ?>" class="pass-input">
+        <button type="submit" class="btn btn-primary">ПОИСК</button>
+    </form>
 
-    <p class="results-count">Найдено записей: 3</p>
+    <p class="results-count">Найдено записей: <?= count($events) ?></p>
 
     <table class="styled-table">
         <thead>
@@ -19,24 +19,18 @@
             </tr>
         </thead>
         <tbody>
+            <?php foreach ($events as $e): 
+                $st = strtolower($e->status);
+                $txt = ($st === 'allowed' || $st === '1') ? 'Вход разрешен' : 'Вход запрещен';
+                $cls = ($st === 'allowed' || $st === '1') ? 'status-allowed' : 'status-denied';
+            ?>
             <tr>
-                <td>01.03.26</td>
-                <td>8:40</td>
-                <td>КПП-1</td>
-                <td class="status-allowed">Вход разрешен</td>
+                <td><?= date('d.m.y', strtotime($e->event_time)) ?></td>
+                <td><?= date('H:i', strtotime($e->event_time)) ?></td>
+                <td><?= $e->turnstile->name ?? '-' ?></td>
+                <td class="<?= $cls ?>"><?= $txt ?></td>
             </tr>
-            <tr>
-                <td>02.03.26</td>
-                <td>9:00</td>
-                <td>КПП-1</td>
-                <td class="status-allowed">Вход разрешен</td>
-            </tr>
-            <tr>
-                <td>03.03.26</td>
-                <td>8:50</td>
-                <td>КПП-2</td>
-                <td class="status-denied">Вход запрещен</td>
-            </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
 </div>

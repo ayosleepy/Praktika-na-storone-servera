@@ -1,9 +1,10 @@
 <div class="page-container">
     <h2>Охранник: <?= app()->auth->user()->name ?? 'Иванов О.О.' ?></h2>
 
-    <div class="search-container">
-        <input type="text" placeholder="Поиск сотрудника..." class="search-input">
-    </div>
+    <form method="get" action="/security/dashboard" class="search-form">
+        <input type="text" name="search" placeholder="Поиск сотрудника..." class="search-input">
+        <button type="submit" class="btn">Поиск</button>
+    </form>
 
     <h3>Последние события:</h3>
 
@@ -16,21 +17,23 @@
             </tr>
         </thead>
         <tbody>
+            <?php foreach ($events as $e): ?>
+            <?php
+                $empName = $e->pass->employee->full_name ?? $e->pass->employee->fio ?? $e->pass->employee->name ?? '-';
+                $statusRaw = strtolower($e->status);
+                $statusText = match($statusRaw) {
+                    'allowed', '1', 'ok' => 'Вход разрешен',
+                    'denied', '0', 'error' => 'Вход запрещен',
+                    default => $e->status
+                };
+                $statusClass = ($statusRaw === 'allowed' || $statusRaw === '1' || $statusRaw === 'ok') ? 'status-allowed' : 'status-denied';
+            ?>
             <tr>
-                <td>14:20</td>
-                <td>Иванов И.В.</td>
-                <td class="status-allowed">Вход разрешен</td>
+                <td><?= $e->event_time ?></td>
+                <td><?= $empName ?></td>
+                <td class="<?= $statusClass ?>"><?= $statusText ?></td>
             </tr>
-            <tr>
-                <td>14:30</td>
-                <td>Петров П.П.</td>
-                <td class="status-allowed">Вход разрешен</td>
-            </tr>
-            <tr>
-                <td>14:40</td>
-                <td>Бобров Б.Б.</td>
-                <td class="status-denied">Вход запрещен</td>
-            </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
 
@@ -48,18 +51,20 @@
     margin: 40px auto;
     padding: 0 16px;
 }
-.search-container {
+.search-form {
     margin-bottom: 24px;
-    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 420px;
 }
 .search-input {
-    width: 100%;
+    flex: 1;
     padding: 12px 16px;
     font-size: 14px;
     border: 1px solid #000;
     border-radius: 8px;
     background: #fff;
-    display: block;
 }
 .styled-table {
     width: 100%;
@@ -109,6 +114,10 @@
     cursor: pointer;
     text-transform: uppercase;
     background: #fff;
+}
+.btn:hover {
+    background: #000;
+    color: #fff;
 }
 .btn-danger {
     border-color: #000;

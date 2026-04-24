@@ -1,13 +1,13 @@
 <div class="page-container">
     <h2>Отчет по сотруднику</h2>
 
-    <div class="filters">
+    <form method="get" class="filters">
         <label>Период:</label>
-        <input type="date" value="2026-03-01" class="date-input">
+        <input type="date" name="date_from" value="<?= $date_from ?>" class="date-input">
         <span class="separator">-</span>
-        <input type="date" value="2026-03-30" class="date-input">
-        <button class="btn btn-primary">ПОИСК</button>
-    </div>
+        <input type="date" name="date_to" value="<?= $date_to ?>" class="date-input">
+        <button type="submit" class="btn btn-primary">ПОИСК</button>
+    </form>
 
     <table class="styled-table">
         <thead>
@@ -19,24 +19,18 @@
             </tr>
         </thead>
         <tbody>
+            <?php foreach ($events as $e): 
+                $st = strtolower($e->status);
+                $txt = ($st === 'allowed' || $st === '1') ? 'Вход разрешен' : 'Вход запрещен';
+                $cls = ($st === 'allowed' || $st === '1') ? 'status-allowed' : 'status-denied';
+            ?>
             <tr>
-                <td>01.03.26</td>
-                <td>8:40</td>
-                <td>17:50</td>
-                <td>9 ч. 10 мин.</td>
+                <td><?= date('d.m.y', strtotime($e->event_time)) ?></td>
+                <td><?= date('H:i', strtotime($e->event_time)) ?></td>
+                <td>-</td>
+                <td class="<?= $cls ?>"><?= $txt ?></td>
             </tr>
-            <tr>
-                <td>02.03.26</td>
-                <td>9:00</td>
-                <td>17:55</td>
-                <td>8 ч. 55 мин.</td>
-            </tr>
-            <tr>
-                <td>03.03.26</td>
-                <td>8:50</td>
-                <td>18:00</td>
-                <td>9 ч. 50 мин.</td>
-            </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
 
