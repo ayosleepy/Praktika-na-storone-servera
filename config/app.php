@@ -2,7 +2,6 @@
 return [
     'auth' => \Src\Auth\Auth::class,
     'identity' => \Model\User::class,
-    'routeMiddleware' => [
-        'auth' => \Middlewares\AuthMiddleware::class,
-    ]
+    'routeMiddleware' => ['auth' => \Middlewares\AuthMiddleware::class],
+    'routeAppMiddleware' => []
 ];

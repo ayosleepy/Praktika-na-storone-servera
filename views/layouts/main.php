@@ -1,25 +1,37 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Pop it MVC</title>
+    <title>СКУД</title>
 </head>
 <body>
-<header>
+
+<header style="background: #eee; padding: 10px; margin-bottom: 20px; border-bottom: 1px solid #ccc;">
     <nav>
-        <a href="<?= app()->route->getUrl('/hello') ?>">Главная</a>
-        <?php if (!app()->auth::check()): ?>
-            <a href="<?= app()->route->getUrl('/login') ?>">Вход</a>
-            <a href="<?= app()->route->getUrl('/signup') ?>">Регистрация</a>
+        <a href="/">Главная</a> |
+
+        <?php if (app()->auth->check()): ?>
+            <b><?= app()->auth->user()->name ?></b> |
+            <a href="/security/dashboard">Панель охраны</a> |
+            <a href="/security/report">Отчет</a> |
+            <a href="/security/search">Поиск</a> |
+
+            <?php if (app()->auth->user()->role === 'admin'): ?>
+                <a href="/admin" style="color: red;">Админка</a> |
+            <?php endif; ?>
+
+            <a href="/logout">Выход</a>
+
         <?php else: ?>
-            <a href="<?= app()->route->getUrl('/logout') ?>">Выход (<?= app()->auth::user()->name ?>)</a>
+            <a href="/login">Вход</a> |
+            <a href="/signup">Регистрация</a>
         <?php endif; ?>
     </nav>
 </header>
-<main>
+
+<main style="padding: 20px;">
     <?= $content ?? '' ?>
 </main>
+
 </body>
 </html>
