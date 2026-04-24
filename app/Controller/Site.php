@@ -12,7 +12,15 @@ class Site
 {
     public function index(): string
     {
-        app()->route->redirect('/login');
+        if (app()->auth->check()) {
+            if (app()->auth->user()->role === 'admin') {
+                app()->route->redirect('/admin');
+            } else {
+                app()->route->redirect('/security/dashboard');
+            }
+        } else {
+            app()->route->redirect('/login');
+        }
         return '';
     }
 
@@ -105,8 +113,10 @@ class Site
     {
         if ($request->method === 'POST') {
             $passId = (int) $request->get('pass_id');
+            $action = $request->get('action');
             if ($passId) {
-                Pass::where('id', $passId)->update(['is_blocked' => 1]);
+                $isBlocked = ($action === 'block') ? 1 : 0;
+                Pass::where('id', $passId)->update(['is_blocked' => $isBlocked]);
             }
         }
         app()->route->redirect('/security/dashboard');

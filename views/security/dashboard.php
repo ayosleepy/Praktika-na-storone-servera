@@ -37,8 +37,21 @@
         </tbody>
     </table>
 
+    <?php
+        $passId = count($events) > 0 ? $events[0]->pass->id : null;
+        $isBlocked = ($passId && count($events) > 0) ? $events[0]->pass->is_blocked : 0;
+    ?>
+
     <div class="action-buttons">
-        <button class="btn btn-danger">ЗАБЛОКИРОВАТЬ</button>
+        <?php if ($passId): ?>
+        <form method="post" action="/security/block-pass">
+            <input type="hidden" name="pass_id" value="<?= $passId ?>">
+            <button type="submit" name="action" value="block" class="btn <?= $isBlocked ? 'disabled' : '' ?>" <?= $isBlocked ? 'disabled' : '' ?>>ЗАБЛОКИРОВАТЬ</button>
+            <button type="submit" name="action" value="unblock" class="btn <?= !$isBlocked ? 'disabled' : '' ?>" <?= !$isBlocked ? 'disabled' : '' ?>>РАЗБЛОКИРОВАТЬ</button>
+        </form>
+        <?php else: ?>
+        <p style="color: #777; margin-top: 10px;">Выполните поиск, чтобы управлять пропуском.</p>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -104,6 +117,8 @@
 }
 .action-buttons {
     margin-top: 24px;
+    display: flex;
+    gap: 10px;
 }
 .btn {
     padding: 10px 24px;
@@ -114,13 +129,16 @@
     cursor: pointer;
     text-transform: uppercase;
     background: #fff;
+    color: #000;
 }
-.btn:hover {
+.btn:hover:not(.disabled) {
     background: #000;
     color: #fff;
 }
-.btn-danger {
-    border-color: #000;
-    color: #000;
+.btn.disabled {
+    background: #eee;
+    color: #999;
+    border-color: #ccc;
+    cursor: not-allowed;
 }
 </style>

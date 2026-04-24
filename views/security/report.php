@@ -33,11 +33,6 @@
             <?php endforeach; ?>
         </tbody>
     </table>
-
-    <div class="action-buttons">
-        <button class="btn btn-secondary">СКАЧАТЬ</button>
-        <button class="btn btn-secondary">ПЕЧАТЬ</button>
-    </div>
 </div>
 
 <style>
@@ -101,11 +96,6 @@
     font-weight: 600;
     color: #000;
 }
-.action-buttons {
-    margin-top: 24px;
-    display: flex;
-    gap: 12px;
-}
 .btn {
     padding: 10px 24px;
     font-size: 14px;
@@ -113,8 +103,12 @@
     border: 1px solid #000;
     border-radius: 8px;
     cursor: pointer;
-    text-transform: uppercase;
     background: #fff;
+    color: #000;
+}
+.btn:hover {
+    background: #000;
+    color: #fff;
 }
 .btn-primary {
     border-color: #000;
