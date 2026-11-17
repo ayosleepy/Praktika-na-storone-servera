@@ -1,7 +1,7 @@
 <div class="page-container">
     <h2>Охранник: <?= app()->auth->user()->name ?? 'Иванов О.О.' ?></h2>
 
-    <form method="get" action="/security/dashboard" class="search-form">
+    <form method="get" action="<?= app()->route->getUrl('/security/dashboard') ?>" class="search-form">
         <input type="text" name="search" placeholder="Поиск сотрудника..." class="search-input">
         <button type="submit" class="btn">Поиск</button>
     </form>
@@ -19,7 +19,7 @@
         <tbody>
             <?php foreach ($events as $e): ?>
             <?php
-                $empName = $e->pass->employee->full_name ?? $e->pass->employee->fio ?? $e->pass->employee->name ?? '-';
+                $empName = $e->pass->employee->full_name ?? '-';
                 $statusRaw = strtolower($e->status);
                 $statusText = match($statusRaw) {
                     'allowed', '1', 'ok' => 'Вход разрешен',
@@ -44,7 +44,8 @@
 
     <div class="action-buttons">
         <?php if ($passId): ?>
-        <form method="post" action="/security/block-pass">
+        <form method="post" action="<?= app()->route->getUrl('/security/block-pass') ?>">
+            <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>" />
             <input type="hidden" name="pass_id" value="<?= $passId ?>">
             <button type="submit" name="action" value="block" class="btn <?= $isBlocked ? 'disabled' : '' ?>" <?= $isBlocked ? 'disabled' : '' ?>>ЗАБЛОКИРОВАТЬ</button>
             <button type="submit" name="action" value="unblock" class="btn <?= !$isBlocked ? 'disabled' : '' ?>" <?= !$isBlocked ? 'disabled' : '' ?>>РАЗБЛОКИРОВАТЬ</button>

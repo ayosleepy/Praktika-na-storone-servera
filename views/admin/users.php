@@ -1,6 +1,6 @@
 <div class="page-container">
     <h2>Сотрудники охраны</h2>
-    <p><a href="/admin/create" class="btn">+ Добавить сотрудника</a></p>
+    <p><a href="<?= app()->route->getUrl('/admin/create') ?>" class="btn">+ Добавить сотрудника</a></p>
     <table class="styled-table">
         <thead>
             <tr>

@@ -72,7 +72,10 @@ class Site
 
     public function securityDashboard(Request $request): string
     {
-        $events = collect();
+        $events = Event::with('pass.employee', 'turnstile')
+            ->orderBy('event_time', 'desc')
+            ->limit(50)
+            ->get();
 
         if ($request->get('search')) {
             $search = $request->get('search');
@@ -92,6 +95,33 @@ class Site
     {
         $dateFrom = $request->get('date_from') ?? date('Y-m-d');
         $dateTo = $request->get('date_to') ?? date('Y-m-d');
+        $message = null;
+
+        $hasDates = $request->get('date_from') || $request->get('date_to');
+
+        if ($hasDates) {
+            $data = [
+                'date_from' => $request->get('date_from'),
+                'date_to' => $request->get('date_to')
+            ];
+
+            $validator = new Validator($data, [
+                'date_from' => ['date'],
+                'date_to' => ['date']
+            ], [
+                'date' => 'Поле :field содержит некорректную дату или дату из будущего'
+            ]);
+
+            if ($validator->fails()) {
+                $message = json_encode($validator->errors(), JSON_UNESCAPED_UNICODE);
+                return new View('security.report', [
+                    'events' => collect(),
+                    'date_from' => $dateFrom,
+                    'date_to' => $dateTo,
+                    'message' => $message
+                ]);
+            }
+        }
 
         $events = Event::with('pass.employee')
             ->whereBetween('event_time', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
@@ -101,7 +131,8 @@ class Site
         return new View('security.report', [
             'events' => $events,
             'date_from' => $dateFrom,
-            'date_to' => $dateTo
+            'date_to' => $dateTo,
+            'message' => $message
         ]);
     }
 
@@ -184,6 +215,17 @@ class Site
 
             $data = $request->all();
             $data['role'] = 'guard';
+
+            if (!empty($_FILES['photo']['name'])) {
+                $uploadDir = __DIR__ . '/../../public/uploads/';
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+                $fileName = time() . '_' . $_FILES['photo']['name'];
+                move_uploaded_file($_FILES['photo']['tmp_name'], $uploadDir . $fileName);
+                $data['photo'] = $fileName;
+            }
+
             if (User::create($data)) {
                 app()->route->redirect('/admin');
                 return '';

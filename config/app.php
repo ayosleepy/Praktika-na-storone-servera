@@ -10,8 +10,10 @@ return [
         'trim' => \Middlewares\TrimMiddleware::class,
         'specialChars' => \Middlewares\SpecialCharsMiddleware::class,
     ],
-    'validators' => [
-        'required' => \Validators\RequireValidator::class,
-        'unique' => \Validators\UniqueValidator::class,
+'validators' => [
+    'required' => \Validators\RequireValidator::class,
+    'unique' => \Validators\UniqueValidator::class,
+    'cardNumber' => \Validators\CardNumberValidator::class,
+    'date' => \Validators\DateValidator::class,
     ],
 ];

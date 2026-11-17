@@ -1,7 +1,7 @@
 <div class="page-container">
     <h2>Поиск событий по пропуску</h2>
 
-    <form method="get" class="search-form">
+    <form method="get" action="<?= app()->route->getUrl('/security/search') ?>" class="search-form">
         <label>Введите номер:</label>
         <input type="text" name="card_number" value="<?= htmlspecialchars($card_number) ?>" class="pass-input">
         <button type="submit" class="btn btn-primary">ПОИСК</button>

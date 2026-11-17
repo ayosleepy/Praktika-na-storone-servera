@@ -3,7 +3,7 @@
     <?php if(!empty($message)): ?>
     <div class="msg"><?= $message ?></div>
     <?php endif; ?>
-    <form method="post" class="auth-form">
+    <form method="post" action="<?= app()->route->getUrl('/admin/store') ?>" class="auth-form" enctype="multipart/form-data">
         <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>" />
         <label>ФИО</label>
         <input type="text" name="name" required>
@@ -11,10 +11,13 @@
         <input type="text" name="login" required>
         <label>Пароль</label>
         <input type="password" name="password" required>
+        <label>Фото</label>
+        <input type="file" name="photo">
         <button type="submit" class="btn">Сохранить</button>
-        <a href="/admin" class="btn" style="margin-left: 10px;">Отмена</a>
+        <a href="<?= app()->route->getUrl('/admin') ?>" class="btn" style="margin-left: 10px;">Отмена</a>
     </form>
 </div>
+
 <style>
 * {
     box-sizing: border-box;
@@ -33,7 +36,8 @@ label {
     font-weight: 600;
 }
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="file"] {
     width: 100%;
     padding: 12px 16px;
     margin-bottom: 16px;

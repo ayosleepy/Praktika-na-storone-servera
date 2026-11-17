@@ -1,6 +1,10 @@
 <div class="page-container">
     <h2>Отчет по сотруднику</h2>
 
+    <?php if(!empty($message)): ?>
+    <div class="msg"><?= $message ?></div>
+    <?php endif; ?>
+
     <form method="get" class="filters">
         <label>Период:</label>
         <input type="date" name="date_from" value="<?= $date_from ?>" class="date-input">
@@ -113,5 +117,13 @@
 .btn-primary {
     border-color: #000;
     color: #000;
+}
+.msg {
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #c00;
+    background: #fff0f0;
+    color: #c00;
+    border-radius: 8px;
 }
 </style>
