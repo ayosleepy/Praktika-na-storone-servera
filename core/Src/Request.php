@@ -1,6 +1,8 @@
 <?php
 namespace Src;
+
 use Error;
+
 class Request
 {
     protected array $body;
@@ -26,7 +28,7 @@ class Request
 
     public function get($field)
     {
-        return $this->body[$field];
+        return $this->body[$field] ?? null;
     }
 
     public function files(): array
@@ -36,9 +38,6 @@ class Request
 
     public function __get($key)
     {
-        if (array_key_exists($key, $this->body)) {
-            return $this->body[$key];
-        }
-        throw new Error('Accessing a non-existent property');
+        return $this->body[$key] ?? null;
     }
 }

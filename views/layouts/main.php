@@ -89,16 +89,16 @@
     <nav>
         <?php if(app()->auth->check()): ?>
             <span style="margin-right: 15px; font-weight: bold;"><?= app()->auth->user()->name ?></span>
-            <a href="/security/dashboard">Панель охраны</a>
-            <a href="/security/report">Отчет</a>
-            <a href="/security/search">Поиск</a>
+            <a href="<?= app()->route->getUrl('/security/dashboard') ?>">Панель охраны</a>
+            <a href="<?= app()->route->getUrl('/security/report') ?>">Отчет</a>
+            <a href="<?= app()->route->getUrl('/security/search') ?>">Поиск</a>
             <?php if(app()->auth->user()->role === 'admin'): ?>
-                <a href="/admin">Админка</a>
+                <a href="<?= app()->route->getUrl('/admin') ?>">Админка</a>
             <?php endif; ?>
-            <a href="/logout">Выход</a>
+            <a href="<?= app()->route->getUrl('/logout') ?>">Выход</a>
         <?php else: ?>
-            <a href="/login">Вход</a>
-            <a href="/signup">Регистрация</a>
+            <a href="<?= app()->route->getUrl('/login') ?>">Вход</a>
+            <a href="<?= app()->route->getUrl('/signup') ?>">Регистрация</a>
         <?php endif; ?>
     </nav>
 </header>

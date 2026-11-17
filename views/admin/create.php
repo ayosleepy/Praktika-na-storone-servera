@@ -4,6 +4,7 @@
     <div class="msg"><?= $message ?></div>
     <?php endif; ?>
     <form method="post" class="auth-form">
+        <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>" />
         <label>ФИО</label>
         <input type="text" name="name" required>
         <label>Логин</label>

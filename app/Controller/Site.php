@@ -6,6 +6,7 @@ use Model\Pass;
 use Model\User;
 use Src\Auth\Auth;
 use Src\Request;
+use Src\Validator\Validator;
 use Src\View;
 
 class Site
@@ -26,8 +27,24 @@ class Site
 
     public function signup(Request $request): string
     {
-        if ($request->method === 'POST' && User::create($request->all())) {
-            app()->route->redirect('/login');
+        if ($request->method === 'POST') {
+            $validator = new Validator($request->all(), [
+                'name' => ['required'],
+                'login' => ['required', 'unique:users,login'],
+                'password' => ['required']
+            ], [
+                'required' => 'Поле :field пусто',
+                'unique' => 'Поле :field должно быть уникально'
+            ]);
+            if ($validator->fails()) {
+                return new View('site.signup', [
+                    'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)
+                ]);
+            }
+            if (User::create($request->all())) {
+                app()->route->redirect('/login');
+                return '';
+            }
         }
         return new View('site.signup');
     }
@@ -151,14 +168,25 @@ class Site
         }
 
         if ($request->method === 'POST') {
-            $data = $request->all();
-            if (empty($data['name']) || empty($data['login']) || empty($data['password'])) {
-                return new View('admin.create', ['message' => 'Заполните все поля']);
+            $validator = new Validator($request->all(), [
+                'name' => ['required'],
+                'login' => ['required', 'unique:users,login'],
+                'password' => ['required']
+            ], [
+                'required' => 'Поле :field пусто',
+                'unique' => 'Поле :field должно быть уникально'
+            ]);
+            if ($validator->fails()) {
+                return new View('admin.create', [
+                    'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)
+                ]);
             }
 
+            $data = $request->all();
             $data['role'] = 'guard';
             if (User::create($data)) {
                 app()->route->redirect('/admin');
+                return '';
             }
             return new View('admin.create', ['message' => 'Ошибка создания']);
         }
