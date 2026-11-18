@@ -18,20 +18,10 @@
         </thead>
         <tbody>
             <?php foreach ($events as $e): ?>
-            <?php
-                $empName = $e->pass->employee->full_name ?? '-';
-                $statusRaw = strtolower($e->status);
-                $statusText = match($statusRaw) {
-                    'allowed', '1', 'ok' => 'Вход разрешен',
-                    'denied', '0', 'error' => 'Вход запрещен',
-                    default => $e->status
-                };
-                $statusClass = ($statusRaw === 'allowed' || $statusRaw === '1' || $statusRaw === 'ok') ? 'status-allowed' : 'status-denied';
-            ?>
             <tr>
                 <td><?= $e->event_time ?></td>
-                <td><?= $empName ?></td>
-                <td class="<?= $statusClass ?>"><?= $statusText ?></td>
+                <td><?= $e->pass->employee->full_name ?? '-' ?></td>
+                <td class="<?= \SkudUtils\PassFormatter::statusClass($e->status) ?>"><?= \SkudUtils\PassFormatter::statusText($e->status) ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

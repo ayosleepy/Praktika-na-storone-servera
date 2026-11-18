@@ -23,16 +23,12 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($events as $e): 
-                $st = strtolower($e->status);
-                $txt = ($st === 'allowed' || $st === '1') ? 'Вход разрешен' : 'Вход запрещен';
-                $cls = ($st === 'allowed' || $st === '1') ? 'status-allowed' : 'status-denied';
-            ?>
+            <?php foreach ($events as $e): ?>
             <tr>
-                <td><?= date('d.m.y', strtotime($e->event_time)) ?></td>
-                <td><?= date('H:i', strtotime($e->event_time)) ?></td>
+                <td><?= \SkudUtils\PassFormatter::formatDate($e->event_time) ?></td>
+                <td><?= \SkudUtils\PassFormatter::formatTime($e->event_time) ?></td>
                 <td>-</td>
-                <td class="<?= $cls ?>"><?= $txt ?></td>
+                <td class="<?= \SkudUtils\PassFormatter::statusClass($e->status) ?>"><?= \SkudUtils\PassFormatter::statusText($e->status) ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>
