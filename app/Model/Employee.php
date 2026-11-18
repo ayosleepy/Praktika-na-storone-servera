@@ -5,6 +5,9 @@ use Illuminate\Database\Eloquent\Model;
 class Employee extends Model
 {
     public $timestamps = false;
-    protected $fillable = ['name', 'position', 'department', 'phone'];
-    public function pass() { return $this->hasOne(Pass::class); }
+    protected $fillable = ['full_name', 'position', 'department', 'phone'];
+    
+    public function pass() { 
+        return $this->hasOne(Pass::class); 
+    }
 }
